@@ -26,7 +26,7 @@ const Chatbot = () => {
     setInput('');
 
     try {
-      const response = await axios.post('http://localhost:3001/api/chat', { message: userMessage.text });
+      const response = await axios.post('https://quickfixride-backend.onrender.com/api/chat', { message: userMessage.text });
       const botMessage = { text: response.data.reply || "I couldn't process that.", sender: 'bot' };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {

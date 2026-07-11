@@ -13,7 +13,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:3001/api/auth/register', {
+      const { data } = await axios.post('https://quickfixride-backend.onrender.com/api/auth/register', {
         name,
         email,
         password,
