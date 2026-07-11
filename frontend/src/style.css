@@ -1,0 +1,13 @@
+@import './assets/css/project.css';
+@import './assets/css/styles.css';
+@import './assets/css/automobile.css';
+@import './assets/css/new.css';
+@import './assets/css/chatbot.css';
+
+/* Global resets and body styling */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
