@@ -18,6 +18,8 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
+app.use('/api/config', require('./routes/configRoutes'));
+app.use('/api/bookings', require('./routes/bookingRoutes'));
 
 const PORT = process.env.PORT || 3001;
 

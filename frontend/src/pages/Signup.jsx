@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSnackbar } from '../context/SnackbarContext';
 import '../assets/css/styles.css';
 
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const showSnackbar = useSnackbar();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('https://quickfixride-backend.onrender.com/api/auth/register', {
+      const { data } = await axios.post('http://localhost:3001/api/auth/register', {
         name,
         email,
         password,
       });
       localStorage.setItem('token', data.token);
+      showSnackbar('Account created successfully!', 'success');
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Signup failed');
+      showSnackbar(err.response?.data?.error || 'Signup failed', 'error');
     }
   };
 
@@ -35,7 +37,6 @@ const Signup = () => {
           <h2>Create Account</h2>
         </div>
         <div className="auth-form">
-          {error && <p style={{ color: 'red' }}>{error}</p>}
           <form onSubmit={handleSubmit}>
             <input 
               type="text" 

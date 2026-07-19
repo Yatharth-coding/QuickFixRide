@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Chatbot from '../components/Chatbot';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from '../context/SnackbarContext';
 
-const apiKey = "AlzaSy-tUgCWFuDyffGAus9mK-qKQkDXaiz093C"; // Existing key
+
 
 const NearbyService = () => {
   const [mechanics, setMechanics] = useState([]);
@@ -12,21 +14,20 @@ const NearbyService = () => {
   const [searchAddress, setSearchAddress] = useState('');
   const [locationHeading, setLocationHeading] = useState('Nearby Mechanics in Bhopal');
   const [loading, setLoading] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  
+  const [selectedMechanic, setSelectedMechanic] = useState(null);
+  const [bookingDate, setBookingDate] = useState('');
+  const [bookingTime, setBookingTime] = useState('');
+  const navigate = useNavigate();
+  const showSnackbar = useSnackbar();
 
   const reverseGeocode = async (lat, lng) => {
     try {
-      const response = await fetch(`https://maps.gomaps.pro/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
       const data = await response.json();
-      if (data.status === "OK") {
-        const components = data.results[0].address_components;
-        let city = "your area";
-        for (const component of components) {
-          if (component.types.includes("locality") || component.types.includes("administrative_area_level_1")) {
-            city = component.long_name;
-            break;
-          }
-        }
-        return city;
+      if (data && data.address) {
+        return data.address.city || data.address.town || data.address.village || data.address.county || "your area";
       }
       return "your area";
     } catch (error) {
@@ -34,61 +35,63 @@ const NearbyService = () => {
     }
   };
 
-  const fetchMechanics = async (lat, lng) => {
+  const fetchMechanics = async (lat, lng, currentApiKey) => {
     setLoading(true);
     try {
-      const response = await fetch(`https://maps.gomaps.pro/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=car_repair&language=en&key=${apiKey}`);
+      let locationName = await reverseGeocode(lat, lng);
+      setLocationHeading(`Nearby Mechanics in ${locationName}`);
+      
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=car+repair+in+${encodeURIComponent(locationName)}`);
       const data = await response.json();
 
       let fetchedMechanics = [];
       
-      if (data.results && data.results.length > 0) {
-        fetchedMechanics = data.results.map((place) => ({
-          Name: place.name || "N/A",
-          Rating: place.rating ? `${place.rating}` : "N/A",
-          Address: place.vicinity || "N/A",
-          MobileNumber: place.formatted_phone_number || "N/A",
-          Price: place.price_level ? `$${place.price_level}` : "N/A",
-          Lat: place.geometry.location.lat,
-          Lng: place.geometry.location.lng,
-        }));
-
-        const origins = `${lat},${lng}`;
-        const destinations = fetchedMechanics.map(m => `${m.Lat},${m.Lng}`).join('|');
-        const distanceResponse = await fetch(`https://maps.gomaps.pro/maps/api/distancematrix/json?origins=${origins}&destinations=${destinations}&key=${apiKey}`);
-        const distanceData = await distanceResponse.json();
-
-        if (distanceData.status === "OK") {
-          distanceData.rows[0].elements.forEach((element, index) => {
-            if (element.status === "OK") {
-              fetchedMechanics[index].Distance = element.distance.value;
-              fetchedMechanics[index].DistanceText = element.distance.text;
-            } else {
-              fetchedMechanics[index].Distance = Infinity;
-              fetchedMechanics[index].DistanceText = "N/A";
-            }
-          });
-        } else {
-          fetchedMechanics.forEach(m => {
-            m.Distance = Infinity;
-            m.DistanceText = "N/A";
-          });
-        }
+      if (data && data.length > 0) {
+        fetchedMechanics = data.map((place) => {
+           // Calculate crow-flies distance using Haversine formula
+           const dLat = (parseFloat(place.lat) - lat) * Math.PI / 180;
+           const dLon = (parseFloat(place.lon) - lng) * Math.PI / 180;
+           const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                     Math.cos(lat * Math.PI / 180) * Math.cos(parseFloat(place.lat) * Math.PI / 180) *
+                     Math.sin(dLon/2) * Math.sin(dLon/2);
+           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+           const distance = 6371 * c * 1000; // in meters
+           
+           return {
+             Name: place.name || place.display_name.split(',')[0] || "Auto Repair",
+             Rating: (Math.random() * (5 - 3.5) + 3.5).toFixed(1), // Mock rating since OSM doesn't have it
+             Address: place.display_name,
+             MobileNumber: "N/A",
+             Price: "$$",
+             Lat: parseFloat(place.lat),
+             Lng: parseFloat(place.lon),
+             Distance: distance,
+             DistanceText: (distance / 1000).toFixed(1) + " km"
+           };
+        });
       } else {
-        // Mock data fallback if Gomaps API fails or returns no results
+        // Mock data fallback if Nominatim API fails or returns no results
         fetchedMechanics = [
-          { Name: "SuperFast Auto Repair", Rating: "4.8", Address: "123 Engine Blvd, " + (await reverseGeocode(lat, lng)), DistanceText: "1.2 km", Distance: 1200 },
-          { Name: "Reliable Mechanics Co.", Rating: "4.5", Address: "456 Transmission Ave", DistanceText: "2.5 km", Distance: 2500 },
-          { Name: "Quick Fix Garage", Rating: "4.2", Address: "789 Brake St", DistanceText: "3.8 km", Distance: 3800 },
-          { Name: "City Center Motors", Rating: "4.9", Address: "101 Exhaust Way", DistanceText: "5.1 km", Distance: 5100 },
+          { Name: "SuperFast Auto Repair", Rating: "4.8", Address: "123 Engine Blvd, " + locationName, DistanceText: "1.2 km", Distance: 1200 },
+          { Name: "Reliable Mechanics Co.", Rating: "4.5", Address: "456 Transmission Ave, " + locationName, DistanceText: "2.5 km", Distance: 2500 },
+          { Name: "Quick Fix Garage", Rating: "4.2", Address: "789 Brake St, " + locationName, DistanceText: "3.8 km", Distance: 3800 },
+          { Name: "City Center Motors", Rating: "4.9", Address: "101 Exhaust Way, " + locationName, DistanceText: "5.1 km", Distance: 5100 },
         ];
       }
 
       setMechanics(fetchedMechanics);
-      const locationName = await reverseGeocode(lat, lng);
-      setLocationHeading(`Nearby Mechanics in ${locationName}`);
     } catch (error) {
       console.error("Error fetching mechanics data:", error);
+      // Fallback in case of complete fetch failure
+      const mockLocation = "your area";
+      const fallbackMechanics = [
+        { Name: "SuperFast Auto Repair", Rating: "4.8", Address: "123 Engine Blvd, " + mockLocation, DistanceText: "1.2 km", Distance: 1200 },
+        { Name: "Reliable Mechanics Co.", Rating: "4.5", Address: "456 Transmission Ave, " + mockLocation, DistanceText: "2.5 km", Distance: 2500 },
+        { Name: "Quick Fix Garage", Rating: "4.2", Address: "789 Brake St, " + mockLocation, DistanceText: "3.8 km", Distance: 3800 },
+        { Name: "City Center Motors", Rating: "4.9", Address: "101 Exhaust Way, " + mockLocation, DistanceText: "5.1 km", Distance: 5100 },
+      ];
+      setMechanics(fallbackMechanics);
+      setLocationHeading(`Nearby Mechanics in ${mockLocation}`);
     }
     setLoading(false);
   };
@@ -101,12 +104,12 @@ const NearbyService = () => {
         const lat = parseFloat(data[0].lat);
         const lng = parseFloat(data[0].lon);
         setLocationHeading(`Nearby Mechanics in ${data[0].display_name.split(',')[0]}`);
-        fetchMechanics(lat, lng);
+        fetchMechanics(lat, lng, apiKey);
       } else {
-        alert("Address not found. Please try another address.");
+        showSnackbar("Address not found. Please try another address.", 'error');
       }
     } catch (error) {
-      alert("Failed to fetch geocode data. Please try again.");
+      showSnackbar("Failed to fetch geocode data. Please try again.", 'error');
     }
   };
 
@@ -114,7 +117,7 @@ const NearbyService = () => {
     if (searchAddress.trim()) {
       geocodeAddress(searchAddress.trim());
     } else {
-      alert("Please enter an address.");
+      showSnackbar("Please enter an address.", 'error');
     }
   };
 
@@ -123,20 +126,29 @@ const NearbyService = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          fetchMechanics(latitude, longitude);
+          fetchMechanics(latitude, longitude, apiKey);
         },
         () => {
-          alert("Failed to get current location. Please allow location access.");
+          showSnackbar("Failed to get current location. Please allow location access.", 'error');
         }
       );
     } else {
-      alert("Geolocation is not supported by your browser.");
+      showSnackbar("Geolocation is not supported by your browser.", 'error');
     }
   };
 
   useEffect(() => {
-    // Default fetch
-    fetchMechanics(23.259933, 77.412613);
+    const fetchKeyAndData = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/config/maps'); // For local development, change in prod
+        const data = await response.json();
+        setApiKey(data.apiKey);
+        fetchMechanics(23.259933, 77.412613, data.apiKey);
+      } catch (err) {
+        console.error("Error fetching map config", err);
+      }
+    };
+    fetchKeyAndData();
   }, []);
 
   const getSortedMechanics = () => {
@@ -160,6 +172,49 @@ const NearbyService = () => {
       return distanceResult !== 0 ? distanceResult : ratingResult;
     });
     return sortedMechanics;
+  };
+
+  const handleBooking = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      showSnackbar("Please login first to book a mechanic.", 'error');
+      navigate('/login');
+      return;
+    }
+    if (!bookingDate || !bookingTime) {
+      showSnackbar("Please select date and time.", 'error');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          serviceType: 'mechanic',
+          mechanicName: selectedMechanic.Name,
+          mechanicAddress: selectedMechanic.Address,
+          date: bookingDate,
+          time: bookingTime,
+          price: 50 // base price for mechanic call-out
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        showSnackbar('Mechanic Booked Successfully! Redirecting to Dashboard...', 'success');
+        setSelectedMechanic(null);
+        navigate('/dashboard');
+      } else {
+        showSnackbar(data.error || 'Failed to book mechanic', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showSnackbar('An error occurred while booking.', 'error');
+    }
   };
 
   return (
@@ -223,7 +278,9 @@ const NearbyService = () => {
                     </div>
                     <div style={{ color: '#4b5563', marginBottom: '15px' }}>Distance: {mechanic.DistanceText}</div>
                   </div>
-                  <button style={{ width: '100%', backgroundColor: '#3b82f6', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                  <button 
+                    onClick={() => setSelectedMechanic(mechanic)}
+                    style={{ width: '100%', backgroundColor: '#3b82f6', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
                     Book Now
                   </button>
                 </div>
@@ -232,6 +289,36 @@ const NearbyService = () => {
           )}
         </div>
       </div>
+
+      {selectedMechanic && (
+        <div className="modal" style={{ display: 'block', position: 'fixed', zIndex: 999, left: 0, top: 0, width: '100%', height: '100%', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.6)' }}>
+          <div className="modal-content" style={{ backgroundColor: '#fff', margin: '10% auto', padding: '30px', border: 'none', borderRadius: '8px', width: '90%', maxWidth: '400px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ margin: 0, fontSize: '20px', color: '#111827' }}>Book {selectedMechanic.Name}</h2>
+              <span onClick={() => setSelectedMechanic(null)} style={{ color: '#9ca3af', fontSize: '28px', fontWeight: 'bold', cursor: 'pointer' }}>&times;</span>
+            </div>
+            
+            <div style={{ marginBottom: '20px' }}>
+              <p style={{ margin: '0 0 10px 0', color: '#4b5563', fontSize: '14px' }}><strong>Address:</strong> {selectedMechanic.Address}</p>
+              <p style={{ margin: '0 0 20px 0', color: '#4b5563', fontSize: '14px' }}><strong>Call-out Fee:</strong> $50.00</p>
+              
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>Date</label>
+                <input type="date" value={bookingDate} onChange={e => setBookingDate(e.target.value)} style={{ width: '100%', padding: '10px', border: '1px solid #d1d5db', borderRadius: '6px' }} />
+              </div>
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>Time</label>
+                <input type="time" value={bookingTime} onChange={e => setBookingTime(e.target.value)} style={{ width: '100%', padding: '10px', border: '1px solid #d1d5db', borderRadius: '6px' }} />
+              </div>
+            </div>
+
+            <button onClick={handleBooking} style={{ width: '100%', padding: '12px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '16px', fontWeight: '600' }}>
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      )}
+
       <Chatbot />
       <Footer />
     </>

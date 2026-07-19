@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSnackbar } from '../context/SnackbarContext';
 import '../assets/css/styles.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const showSnackbar = useSnackbar();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('https://quickfixride-backend.onrender.com/api/auth/login', {
+      const { data } = await axios.post('http://localhost:3001/api/auth/login', {
         email,
         password,
       });
       localStorage.setItem('token', data.token);
+      showSnackbar('Login successful!', 'success');
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      showSnackbar(err.response?.data?.error || 'Login failed', 'error');
     }
   };
 
@@ -33,7 +35,6 @@ const Login = () => {
           <h2>Car Care Connect</h2>
         </div>
         <div className="auth-form">
-          {error && <p style={{ color: 'red' }}>{error}</p>}
           <form onSubmit={handleSubmit}>
             <input 
               type="email" 

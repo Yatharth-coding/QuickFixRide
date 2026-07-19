@@ -8,9 +8,16 @@ import Signup from './pages/Signup';
 import BookRide from './pages/BookRide';
 import NearbyService from './pages/NearbyService';
 import Dashboard from './pages/Dashboard';
+import CarWash from './pages/CarWash';
+import ContactUs from './pages/ContactUs';
+import Team from './pages/Team';
+import JoinDriver from './pages/JoinDriver';
+import ServiceHistory from './pages/ServiceHistory';
+import RideHistory from './pages/RideHistory';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const Placeholder = ({ title }) => (
   <>
@@ -28,18 +35,23 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/book-ride" element={<BookRide />} />
-          <Route path="/nearby-service" element={<NearbyService />} />
-          <Route path="/car-wash" element={<Placeholder title="Car Wash Services" />} />
-          <Route path="/business/join-driver" element={<Placeholder title="Join as Driver Partner" />} />
-          <Route path="/business/hire-drivers" element={<Placeholder title="Hire Drivers for B2B" />} />
-          <Route path="/about/team" element={<Placeholder title="Our Team" />} />
+          <Route path="/about/team" element={<Team />} />
+          <Route path="/about/contact" element={<ContactUs />} />
           <Route path="/about/blog" element={<Placeholder title="3C Blog" />} />
-          <Route path="/about/contact" element={<Placeholder title="Contact Us" />} />
+          <Route path="/business/join-driver" element={<JoinDriver />} />
+          <Route path="/business/hire-drivers" element={<Placeholder title="Hire Drivers for B2B" />} />
+
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/book-ride" element={<ProtectedRoute><BookRide /></ProtectedRoute>} />
+          <Route path="/nearby-service" element={<ProtectedRoute><NearbyService /></ProtectedRoute>} />
+          <Route path="/car-wash" element={<ProtectedRoute><CarWash /></ProtectedRoute>} />
+          <Route path="/service-history" element={<ProtectedRoute><ServiceHistory /></ProtectedRoute>} />
+          <Route path="/ride-history" element={<ProtectedRoute><RideHistory /></ProtectedRoute>} />
         </Routes>
       </div>
     </Router>

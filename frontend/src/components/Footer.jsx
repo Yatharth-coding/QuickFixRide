@@ -12,19 +12,19 @@ const Footer = () => {
         <div className="footer-column">
           <h3>About</h3>
           <ul>
-            <li><Link to="/">Team</Link></li>
-            <li><Link to="/">Blog</Link></li>
-            <li><Link to="/">Contact Us</Link></li>
+            <li><Link to="/about/team">Team</Link></li>
+            <li><Link to="/about/blog">Blog</Link></li>
+            <li><Link to="/about/contact">Contact Us</Link></li>
             <li><Link to="/">Chat with us</Link></li>
           </ul>
         </div>
         <div className="footer-column">
           <h3>Services</h3>
           <ul>
-            <li><Link to="/">Hire a Driver</Link></li>
-            <li><Link to="/">Hire a Temporary Driver</Link></li>
-            <li><Link to="/">Hire Hourly Drivers</Link></li>
-            <li><Link to="/">Hire Chauffeurs</Link></li>
+            <li><Link to="/business/hire-drivers">Hire a Driver</Link></li>
+            <li><Link to="/business/hire-drivers">Hire a Temporary Driver</Link></li>
+            <li><Link to="/business/hire-drivers">Hire Hourly Drivers</Link></li>
+            <li><Link to="/business/hire-drivers">Hire Chauffeurs</Link></li>
             <li><Link to="/">3C Offers</Link></li>
             <li><Link to="/">3C Black</Link></li>
           </ul>
@@ -32,8 +32,8 @@ const Footer = () => {
         <div className="footer-column">
           <h3>For Business</h3>
           <ul>
-            <li><Link to="/">Hire Drivers for B2B</Link></li>
-            <li><Link to="/">Join as Driver Partner</Link></li>
+            <li><Link to="/business/hire-drivers">Hire Drivers for B2B</Link></li>
+            <li><Link to="/business/join-driver">Join as Driver Partner</Link></li>
           </ul>
         </div>
         <div className="footer-column">

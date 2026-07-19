@@ -4,16 +4,40 @@ import Footer from '../components/Footer';
 
 const Dashboard = () => {
   const [profiles, setProfiles] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editUser, setEditUser] = useState({ name: '', email: '', id: null });
 
-  // Simulate fetching profiles
+  // Fetch user profile and bookings
   useEffect(() => {
-    // In a real app, you would fetch this from /api/users
-    setProfiles([
-      { id: 1, name: 'John Doe', email: 'john@example.com' },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-    ]);
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      try {
+        const response = await fetch('http://localhost:3001/api/auth/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        if (data.success) {
+          setProfiles([{ id: data.data._id, name: data.data.name, email: data.data.email }]);
+        }
+
+        const bookingsResponse = await fetch('http://localhost:3001/api/bookings', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const bookingsData = await bookingsResponse.json();
+        if (bookingsData.success) {
+          setBookings(bookingsData.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch dashboard data", err);
+      }
+    };
+    fetchProfile();
   }, []);
 
   const handleEdit = (user) => {
@@ -49,14 +73,58 @@ const Dashboard = () => {
               <tr key={profile.id}>
                 <td style={{ padding: '12px', border: '1px solid #ddd' }}>{profile.name}</td>
                 <td style={{ padding: '12px', border: '1px solid #ddd' }}>{profile.email}</td>
-                <td style={{ padding: '12px', border: '1px solid #ddd' }}>
-                  <button onClick={() => handleEdit(profile)} style={{ marginRight: '10px' }}>Edit</button>
-                  <button onClick={() => handleDelete(profile.id)} style={{ backgroundColor: 'red', color: 'white' }}>Delete</button>
+                <td style={{ padding: '12px', border: '1px solid #ddd', textAlign: 'center' }}>
+                  <button onClick={() => handleEdit(profile)} style={{ display: 'inline-block', marginRight: '10px', padding: '8px 16px', backgroundColor: '#00bcd4', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => handleDelete(profile.id)} style={{ display: 'inline-block', padding: '8px 16px', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        <h2 style={{ marginTop: '40px' }}>My Bookings</h2>
+        {bookings.length === 0 ? (
+          <p>No bookings found.</p>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#f9fafb' }}>
+                <th style={{ padding: '12px', border: '1px solid #ddd' }}>Type</th>
+                <th style={{ padding: '12px', border: '1px solid #ddd' }}>Details</th>
+                <th style={{ padding: '12px', border: '1px solid #ddd' }}>Date & Time</th>
+                <th style={{ padding: '12px', border: '1px solid #ddd' }}>Price</th>
+                <th style={{ padding: '12px', border: '1px solid #ddd' }}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map(booking => (
+                <tr key={booking._id}>
+                  <td style={{ padding: '12px', border: '1px solid #ddd', textTransform: 'capitalize' }}>
+                    {booking.serviceType === 'ride' ? '🚕 Ride' : '🔧 Mechanic'}
+                  </td>
+                  <td style={{ padding: '12px', border: '1px solid #ddd' }}>
+                    {booking.serviceType === 'ride' 
+                      ? `${booking.pickupLocation} → ${booking.dropoffLocation}`
+                      : `${booking.mechanicName} (${booking.mechanicAddress})`}
+                  </td>
+                  <td style={{ padding: '12px', border: '1px solid #ddd' }}>{booking.date} at {booking.time}</td>
+                  <td style={{ padding: '12px', border: '1px solid #ddd' }}>${booking.price}</td>
+                  <td style={{ padding: '12px', border: '1px solid #ddd' }}>
+                    <span style={{ 
+                      padding: '4px 8px', 
+                      borderRadius: '12px', 
+                      fontSize: '12px',
+                      backgroundColor: booking.status === 'confirmed' ? '#dcfce7' : '#f3f4f6',
+                      color: booking.status === 'confirmed' ? '#166534' : '#374151'
+                    }}>
+                      {booking.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {isModalOpen && (

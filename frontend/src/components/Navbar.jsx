@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/css/project.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -107,15 +108,17 @@ const Navbar = () => {
             </div>
           ) : (
             <div id="profile-dropdown" className="profile-container" style={{ display: 'block' }}>
-              <button id="profile-btn" className="profile-button">
+              <button id="profile-btn" className="profile-button" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                 <img src="/images/free-user-icon-3296-thumb.png" alt="Profile" className="profile-icon" />
               </button>
-              <ul className="dropdown-menu">
-                <li className="dropdown-item"><Link to="/dashboard">Dashboard</Link></li>
-                <li className="dropdown-item">Service History</li>
-                <li className="dropdown-item">Ride History</li>
-                <li className="dropdown-item" onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</li>
-              </ul>
+              {isDropdownOpen && (
+                <ul className="dropdown-menu" style={{ display: 'block' }}>
+                  <li className="dropdown-item"><Link to="/dashboard" onClick={() => setIsDropdownOpen(false)}>Dashboard</Link></li>
+                  <li className="dropdown-item"><Link to="/service-history" onClick={() => setIsDropdownOpen(false)}>Service History</Link></li>
+                  <li className="dropdown-item"><Link to="/ride-history" onClick={() => setIsDropdownOpen(false)}>Ride History</Link></li>
+                  <li className="dropdown-item" onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</li>
+                </ul>
+              )}
             </div>
           )}
         </li>

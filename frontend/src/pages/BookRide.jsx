@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Chatbot from '../components/Chatbot';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from '../context/SnackbarContext';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
@@ -10,12 +12,14 @@ import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 const BookRide = () => {
   const [pickup, setPickup] = useState('');
   const [dropoff, setDropoff] = useState('');
-  const [date, setDate] = useState('2024-11-20');
-  const [time, setTime] = useState('12:00');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
   const [showPrices, setShowPrices] = useState(false);
   const [estimatedPrice, setEstimatedPrice] = useState(null);
   const mapRef = useRef(null);
   const routeControlRef = useRef(null);
+  const navigate = useNavigate();
+  const showSnackbar = useSnackbar();
 
   useEffect(() => {
     // Initialize map
@@ -54,7 +58,7 @@ const BookRide = () => {
   const handleRoute = (e) => {
     e.preventDefault();
     if (!pickup || !dropoff) {
-      alert('Please enter both pickup and dropoff locations.');
+      showSnackbar('Please enter both pickup and dropoff locations.', 'error');
       return;
     }
 
@@ -70,10 +74,17 @@ const BookRide = () => {
               collapsible: true,
               show: false
             }).addTo(mapRef.current);
+            
+            routeControlRef.current.on('routesfound', function(e) {
+              const routes = e.routes;
+              const distanceInKm = routes[0].summary.totalDistance / 1000;
+              // Base price $2 + $1.5 per km
+              setEstimatedPrice(Math.floor(2 + (1.5 * distanceInKm)));
+            });
           }
           mapRef.current.setView(pickupLatLng, 6);
         } else {
-          alert('Unable to find one or both locations.');
+          showSnackbar('Unable to find one or both locations.', 'error');
         }
       });
     });
@@ -85,14 +96,56 @@ const BookRide = () => {
     localStorage.setItem('ride_date', date);
     localStorage.setItem('ride_time', time);
     
-    // Simple estimation based on presence of locations
-    if (pickup && dropoff) {
-      setEstimatedPrice(Math.floor(Math.random() * 50) + 20); // Random estimate between $20 and $70
+    // Use estimated price calculated from routing
+    if (pickup && dropoff && estimatedPrice) {
+      if (!date || !time) {
+        showSnackbar("Please select date and time.", 'error');
+        return;
+      }
       setShowPrices(true);
     } else {
-      alert("Please enter pickup and dropoff locations to see prices.");
+      showSnackbar("Please enter pickup and dropoff locations and click Show Route first.", 'error');
     }
     // navigate('/book-ride-prices')
+  };
+
+  const handleBooking = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      showSnackbar("Please login first to book a ride.", 'error');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          serviceType: 'ride',
+          pickupLocation: pickup,
+          dropoffLocation: dropoff,
+          date,
+          time,
+          price: estimatedPrice
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        showSnackbar('Ride Booked Successfully! Redirecting to Dashboard...', 'success');
+        setShowPrices(false);
+        navigate('/dashboard');
+      } else {
+        showSnackbar(data.error || 'Failed to book ride', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showSnackbar('An error occurred while booking.', 'error');
+    }
   };
 
   return (
@@ -143,7 +196,7 @@ const BookRide = () => {
                   <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${Math.floor(estimatedPrice * 1.5)}</div>
                 </div>
                 <button 
-                  onClick={() => { alert('Ride Booked! Redirecting to Dashboard...'); setShowPrices(false); }}
+                  onClick={handleBooking}
                   style={{ width: '100%', padding: '1rem', marginTop: '1rem', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold' }}
                 >
                   Confirm Booking
