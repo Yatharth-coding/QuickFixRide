@@ -17,15 +17,16 @@ header {
 }
 
 #logo_img{
-  
-        height: 14%;
-        width: 16%;
+        height: 50px;
+        width: auto;
+        object-fit: contain;
 }
 
-#logo_foter{
-  
-    height: 60%;
-    width: 90%;
+#logo_foter {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    object-fit: contain;
 }
 
 .number {

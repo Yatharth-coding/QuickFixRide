@@ -11,9 +11,9 @@ exports.handleChat = async (req, res) => {
             const { GoogleGenerativeAI } = require('@google/generative-ai');
             const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
             // Use the correct modern model
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
             
-            const systemPrompt = "You are a helpful AI assistant for a car servicing and ride-booking company named QuickFixRide (3C). Be polite and keep answers concise. User says: ";
+            const systemPrompt = "You are a helpful AI assistant for a car servicing and ride-booking company named QuickFixRide. Be polite and keep answers concise. User says: ";
             const result = await model.generateContent(systemPrompt + message);
             const botReply = result.response.text() || "I couldn't process that.";
             

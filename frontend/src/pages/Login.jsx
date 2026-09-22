@@ -30,7 +30,7 @@ const Login = () => {
       <div className="auth-container">
         <div className="auth-header">
           <div className="auth-logo">
-            <span>3C</span>
+            <img src="/images/qfr.png" alt="Quick Fix Ride Logo" style={{ maxWidth: '100px' }} />
           </div>
           <h2>Car Care Connect</h2>
         </div>

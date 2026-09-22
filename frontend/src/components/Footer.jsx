@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-column">
-          <img src="/images/LOGO.png" alt="Logo" id="logo_foter" />
+          <img src="/images/qfr.png" alt="Logo" id="logo_foter" />
         </div>
         <div className="footer-column">
           <h3>About</h3>
@@ -25,8 +25,8 @@ const Footer = () => {
             <li><Link to="/business/hire-drivers">Hire a Temporary Driver</Link></li>
             <li><Link to="/business/hire-drivers">Hire Hourly Drivers</Link></li>
             <li><Link to="/business/hire-drivers">Hire Chauffeurs</Link></li>
-            <li><Link to="/">3C Offers</Link></li>
-            <li><Link to="/">3C Black</Link></li>
+            <li><Link to="/">Quick Fix Ride Offers</Link></li>
+            <li><Link to="/">Quick Fix Ride Black</Link></li>
           </ul>
         </div>
         <div className="footer-column">

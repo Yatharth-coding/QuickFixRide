@@ -16,7 +16,7 @@ const Navbar = () => {
     <nav className="navbar">
       <Link to="/">
         <div className="logo">
-          <img src="/images/LOGO.png" alt="Logo" id="logo_img" />
+          <img src="/images/qfr.png" alt="Logo" id="logo_img" />
         </div>
       </Link>
       <ul className="nav-links">
@@ -75,7 +75,7 @@ const Navbar = () => {
                   <div className="business-icon">🤝</div>
                   <div className="business-details">
                     <div className="business-title">Join as Driver Partner</div>
-                    <div className="business-description">Earn with 3C with zero investments</div>
+                    <div className="business-description">Earn with Quick Fix Ride with zero investments</div>
                   </div>
                 </Link>
               </div>

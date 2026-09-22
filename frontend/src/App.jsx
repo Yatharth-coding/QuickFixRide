@@ -41,7 +41,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/about/team" element={<Team />} />
           <Route path="/about/contact" element={<ContactUs />} />
-          <Route path="/about/blog" element={<Placeholder title="3C Blog" />} />
+          <Route path="/about/blog" element={<Placeholder title="Quick Fix Ride Blog" />} />
           <Route path="/business/join-driver" element={<JoinDriver />} />
           <Route path="/business/hire-drivers" element={<Placeholder title="Hire Drivers for B2B" />} />
 
