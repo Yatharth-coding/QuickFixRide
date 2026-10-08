@@ -72,7 +72,7 @@ const NearbyService = () => {
         fetchedMechanics = [
           { Name: 'SuperFast Auto Repair', Rating: '4.8', Address: '123 Engine Blvd, ' + locationName, DistanceText: '1.2 km', Distance: 1200, isVerified: false },
           { Name: 'Reliable Mechanics Co.', Rating: '4.5', Address: '456 Transmission Ave, ' + locationName, DistanceText: '2.5 km', Distance: 2500, isVerified: false },
-          { Name: 'Quick Fix Garage', Rating: '4.2', Address: '789 Brake St, ' + locationName, DistanceText: '3.8 km', Distance: 3800, isVerified: false },
+          { Name: 'Car Care Garage', Rating: '4.2', Address: '789 Brake St, ' + locationName, DistanceText: '3.8 km', Distance: 3800, isVerified: false },
           { Name: 'City Center Motors', Rating: '4.9', Address: '101 Exhaust Way, ' + locationName, DistanceText: '5.1 km', Distance: 5100, isVerified: false },
         ];
       }
@@ -84,7 +84,7 @@ const NearbyService = () => {
       setMechanics([
         { Name: 'SuperFast Auto Repair', Rating: '4.8', Address: '123 Engine Blvd, ' + mockLocation, DistanceText: '1.2 km', Distance: 1200, isVerified: false },
         { Name: 'Reliable Mechanics Co.', Rating: '4.5', Address: '456 Transmission Ave, ' + mockLocation, DistanceText: '2.5 km', Distance: 2500, isVerified: false },
-        { Name: 'Quick Fix Garage', Rating: '4.2', Address: '789 Brake St, ' + mockLocation, DistanceText: '3.8 km', Distance: 3800, isVerified: false },
+        { Name: 'Car Care Garage', Rating: '4.2', Address: '789 Brake St, ' + mockLocation, DistanceText: '3.8 km', Distance: 3800, isVerified: false },
         { Name: 'City Center Motors', Rating: '4.9', Address: '101 Exhaust Way, ' + mockLocation, DistanceText: '5.1 km', Distance: 5100, isVerified: false },
       ]);
       setLocationHeading(`Nearby Mechanics in ${mockLocation}`);
@@ -199,9 +199,6 @@ const NearbyService = () => {
       <div style={{ backgroundColor: '#f3f4f6', minHeight: '100vh', padding: '2rem 0' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 15px' }}>
 
-          <div style={{ backgroundColor: '#fef3cd', padding: '10px 16px', borderRadius: '6px', marginBottom: '16px', fontSize: '14px', color: '#856404', border: '1px solid #ffc107' }}>
-            ⓘ Service listings are sourced from OpenStreetMap. Ratings are estimated and not verified. Please confirm details directly with the service provider.
-          </div>
 
           <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', marginBottom: '20px' }}>
             <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -271,7 +268,7 @@ const NearbyService = () => {
 
             <div style={{ marginBottom: '20px' }}>
               <p style={{ margin: '0 0 10px 0', color: '#4b5563', fontSize: '14px' }}><strong>Address:</strong> {selectedMechanic.Address}</p>
-              <p style={{ margin: '0 0 20px 0', color: '#4b5563', fontSize: '14px' }}><strong>Call-out Fee:</strong> \$50.00 (calculated by server)</p>
+              <p style={{ margin: '0 0 20px 0', color: '#4b5563', fontSize: '14px' }}><strong>Call-out Fee:</strong> ₹499.00 (calculated by server)</p>
 
               <div style={{ marginBottom: '15px' }}>
                 <label htmlFor="booking-date" style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>Date</label>

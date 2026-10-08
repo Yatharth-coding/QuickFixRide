@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
-// Server-side pricing configuration
+// Server-side pricing configuration in INR (₹)
 const PRICING = {
     ride: {
-        economy: { baseFare: 2, perKm: 1.5 },
-        premium: { baseFare: 5, perKm: 2.5 }
+        economy: { baseFare: 50, perKm: 15 },
+        premium: { baseFare: 100, perKm: 25 }
     },
     mechanic: {
-        callout: 50
+        callout: 499
     },
     car_wash: {
-        basic: 20,
-        premium: 40,
-        full_detail: 80
+        basic: 299,
+        premium: 599,
+        full_detail: 999
     }
 };
 

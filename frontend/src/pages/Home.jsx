@@ -55,8 +55,8 @@ const Home = () => {
 
   const faqs = [
     {
-      question: "How does Quick Fix Ride ensure transparency in car repairs?",
-      answer: "Quick Fix Ride ensures transparency by providing live tracking of vehicle pickup and drop-off, as well as real-time updates on the progress of car repairs through a job card. This allows you to stay informed about the status of your vehicle at all times."
+      question: "How does Car Care Connect ensure transparency in car repairs?",
+      answer: "Car Care Connect ensures transparency by providing live tracking of vehicle pickup and drop-off, as well as real-time updates on the progress of car repairs through a job card. This allows you to stay informed about the status of your vehicle at all times."
     },
     {
       question: "What is included in the basic services package?",
@@ -71,7 +71,7 @@ const Home = () => {
       answer: "We allow you to customize the repairs to your preferences. You can communicate your requirements when booking a service."
     },
     {
-      question: "Can I provide feedback on the service received through Quick Fix Ride?",
+      question: "Can I provide feedback on the service received through Car Care Connect?",
       answer: "Yes, we encourage you to provide feedback after your service to help us improve the quality of our service."
     }
   ];
@@ -95,7 +95,7 @@ const Home = () => {
           </section>
 
           <section className="services">
-            <h2>How does Quick Fix Ride Work</h2>
+            <h2>How does Car Care Connect Work</h2>
             <div className="service-list">
               <div className="service-item1">
                 <img src="/images/const.webp" alt="Consult Service" />
@@ -105,7 +105,7 @@ const Home = () => {
               <div className="service-item1">
                 <img src="/images/2.webp" alt="Free Pickup" />
                 <h3>Schedule Your Car's Free Pickup</h3>
-                <p>Book a convenient time for Quick Fix Ride to pick up your car from your location, saving you time and effort in getting your vehicle to the garage.</p>
+                <p>Book a convenient time for Car Care Connect to pick up your car from your location, saving you time and effort in getting your vehicle to the garage.</p>
               </div>
               <div className="service-item1">
                 <img src="/images/img.webp" alt="Inspection and Estimation" />

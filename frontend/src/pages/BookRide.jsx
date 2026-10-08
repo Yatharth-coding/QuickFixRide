@@ -198,7 +198,7 @@ const BookRide = () => {
                     <h4 style={{ margin: 0, fontSize: '1.2rem' }}>Economy</h4>
                     <p style={{ margin: 0, color: '#6b7280', fontSize: '0.9rem' }}>Standard 4-seater</p>
                   </div>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>\${prices.economyPrice}</div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>₹{prices.economyPrice}</div>
                 </button>
                 <button
                   type="button"
@@ -210,7 +210,7 @@ const BookRide = () => {
                     <h4 style={{ margin: 0, fontSize: '1.2rem' }}>Premium</h4>
                     <p style={{ margin: 0, color: '#6b7280', fontSize: '0.9rem' }}>Luxury vehicles</p>
                   </div>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>\${prices.premiumPrice}</div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>₹{prices.premiumPrice}</div>
                 </button>
                 <button
                   type="button"

@@ -170,7 +170,7 @@ const Dashboard = () => {
                     {getBookingDetails(booking)}
                   </td>
                   <td style={{ padding: '12px', border: '1px solid #ddd' }}>{formatBookingDate(booking)}</td>
-                  <td style={{ padding: '12px', border: '1px solid #ddd' }}>\${booking.price}</td>
+                  <td style={{ padding: '12px', border: '1px solid #ddd' }}>₹{booking.price}</td>
                   <td style={{ padding: '12px', border: '1px solid #ddd' }}>
                     <span style={{
                       padding: '4px 8px',

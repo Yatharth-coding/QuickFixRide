@@ -1,4 +1,4 @@
-# QuickFixRide 🚗💨
+# Car Care Connect 🚗💨
 
 > A comprehensive modern web platform for on-demand ride booking, doorstep vehicle maintenance, car care services, and smart AI assistance.
 
@@ -13,9 +13,9 @@
 
 ## 🌟 Overview
 
-**QuickFixRide** bridges the gap between everyday commuters, car owners, and professional automotive service providers. Whether you need an instant ride, doorstep vehicle diagnostics, periodic car maintenance, or a pressure wash, QuickFixRide brings automotive convenience directly to your fingertips.
+**Car Care Connect** bridges the gap between everyday commuters, car owners, and professional automotive service providers. Whether you need an instant ride, doorstep vehicle diagnostics, periodic car maintenance, or a pressure wash, Car Care Connect brings automotive convenience directly to your fingertips.
 
-Additionally, QuickFixRide features an integrated **AI Smart Chatbot** powered by Google Gemini, capable of answering queries regarding vehicle health, bookings, and platform guidance in real-time.
+Additionally, Car Care Connect features an integrated **AI Smart Chatbot** powered by Google Gemini, capable of answering queries regarding vehicle health, bookings, and platform guidance in real-time.
 
 ---
 

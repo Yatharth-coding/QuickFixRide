@@ -4,6 +4,9 @@ node_modules/
 .pnp
 .pnp.js
 
+codex_Code
+interview-questions
+
 # Environment variables and secrets
 .env
 .env.*

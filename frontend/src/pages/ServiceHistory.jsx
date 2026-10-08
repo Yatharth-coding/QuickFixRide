@@ -68,7 +68,7 @@ const ServiceHistory = () => {
                     </td>
                     <td style={{ padding: '1rem' }}>{getServiceDetails(booking)}</td>
                     <td style={{ padding: '1rem' }}>{formatServiceDate(booking)}</td>
-                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>${booking.price}</td>
+                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>₹{booking.price}</td>
                     <td style={{ padding: '1rem' }}>
                       <span style={{
                         padding: '4px 8px',

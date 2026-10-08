@@ -38,7 +38,7 @@ const JoinDriver = () => {
       <div style={{ backgroundColor: '#f9fafb', minHeight: '80vh', padding: '4rem 2rem' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1rem', textAlign: 'center', color: '#111827' }}>Join as Driver Partner</h1>
-          <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '2rem' }}>Earn with QuickFixRide with zero investments. Apply today!</p>
+          <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '2rem' }}>Earn with Car Care Connect with zero investments. Apply today!</p>
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: '1.5rem' }}>

@@ -47,22 +47,22 @@ h2 {
   color: #292525;
 }
 
-/* Button Styling */
-button {
-  background-color: #00bcd4; /* Soft teal for button */
-  color: vlack;
+/* Auth Button Styling */
+.auth-container button,
+.auth-form button {
+  background-color: #00bcd4;
+  color: #ffffff;
   border: none;
-  padding: 10px 96px;
+  padding: 10px 30px;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  width: auto; /* Center the button */
-  margin: 0 auto;
+  margin: 15px auto 0 auto;
   display: block;
-  margin-top: 15px;
 }
 
-button:hover {
+.auth-container button:hover,
+.auth-form button:hover {
   background-color: #0097a7;
 }
 

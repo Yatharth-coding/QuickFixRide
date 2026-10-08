@@ -58,7 +58,7 @@ const RideHistory = () => {
                     <td style={{ padding: '1rem' }}>{booking.pickupLocation} → {booking.dropoffLocation}</td>
                     <td style={{ padding: '1rem', textTransform: 'capitalize' }}>{booking.rideType || 'economy'}</td>
                     <td style={{ padding: '1rem' }}>{formatRideDate(booking)}</td>
-                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>${booking.price}</td>
+                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>₹{booking.price}</td>
                     <td style={{ padding: '1rem' }}>
                       <span style={{
                         padding: '4px 8px',

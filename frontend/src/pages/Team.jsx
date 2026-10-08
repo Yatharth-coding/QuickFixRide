@@ -9,7 +9,7 @@ const Team = () => {
       <div style={{ backgroundColor: '#f9fafb', minHeight: '80vh', padding: '4rem 2rem' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', textAlign: 'center', color: '#111827' }}>Meet Our Team</h1>
-          <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '3rem', fontSize: '1.2rem' }}>The passionate people driving QuickFixRide forward.</p>
+          <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '3rem', fontSize: '1.2rem' }}>The passionate people driving Car Care Connect forward.</p>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
             {/* Team Member 1 */}
@@ -29,7 +29,7 @@ const Team = () => {
               </div>
               <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: '#111827' }}>Shubham Sharma</h3>
               <p style={{ color: '#3b82f6', fontWeight: '500', marginBottom: '1rem' }}>Chief Technology Officer</p>
-              <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>Shubham engineers the scalable infrastructure that powers the QuickFixRide platform.</p>
+              <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>Shubham engineers the scalable infrastructure that powers the Car Care Connect platform.</p>
             </div>
 
             {/* Team Member 3 */}

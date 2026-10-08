@@ -18,9 +18,9 @@ const CarWash = () => {
   const today = new Date().toISOString().split('T')[0];
 
   const prices = {
-    basic: 20,
-    premium: 40,
-    full_detail: 80
+    basic: 299,
+    premium: 599,
+    full_detail: 999
   };
 
   const getCurrentLocation = () => {
@@ -141,14 +141,14 @@ const CarWash = () => {
                 style={{ width: '100%', padding: '0.75rem', border: '1px solid #d1d5db', borderRadius: '4px', backgroundColor: 'white' }}
                 aria-label="Wash package"
               >
-                <option value="basic">Basic Exterior Wash - \${prices.basic}</option>
-                <option value="premium">Premium Wash & Interior Vacuum - \${prices.premium}</option>
-                <option value="full_detail">Full Detailing & Wax - \${prices.full_detail}</option>
+                <option value="basic">Basic Exterior Wash - ₹{prices.basic}</option>
+                <option value="premium">Premium Wash & Interior Vacuum - ₹{prices.premium}</option>
+                <option value="full_detail">Full Detailing & Wax - ₹{prices.full_detail}</option>
               </select>
             </div>
 
             <button type="submit" disabled={loading} style={{ width: '100%', padding: '1rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', fontSize: '1.1rem' }}>
-              {loading ? 'Booking...' : `Book Now (\$${prices[packageType]})`}
+              {loading ? 'Booking...' : `Book Now (₹${prices[packageType]})`}
             </button>
           </form>
         </div>
