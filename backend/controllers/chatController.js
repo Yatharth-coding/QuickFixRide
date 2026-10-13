@@ -25,7 +25,8 @@ exports.handleChat = async (req, res, next) => {
 
         try {
             const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-            const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
+            const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+            const model = genAI.getGenerativeModel({ model: modelName });
 
             const systemPrompt = 'You are a helpful AI assistant for a car servicing and ride-booking company named Car Care Connect. Be polite, keep answers concise (under 200 words), and only answer questions related to automotive services, ride booking, and vehicle maintenance. All prices are in Indian Rupees (₹). If asked about unrelated topics, politely redirect. User says: ';
 

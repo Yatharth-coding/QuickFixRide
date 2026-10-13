@@ -49,7 +49,8 @@ app.use(cors({
         if (
             localOrigins.includes(cleanOrigin) ||
             configuredOrigins.includes(cleanOrigin) ||
-            cleanOrigin.endsWith('.vercel.app')
+            cleanOrigin.endsWith('.vercel.app') ||
+            cleanOrigin.endsWith('.github.io')
         ) {
             return callback(null, true);
         }

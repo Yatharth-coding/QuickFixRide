@@ -46,10 +46,14 @@ const Chatbot = () => {
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Chat error:', error);
+      const isNetworkError = error.message === 'Network Error' || !error.response;
+      const errorMsg = isNetworkError
+        ? 'Unable to connect to server. If the Render backend is waking up, it may take ~50 seconds. Please try again shortly.'
+        : (error.response?.data?.error || 'Unable to connect to Car Care Connect assistant. Please try again shortly.');
       setMessages((prev) => [
         ...prev, 
         { 
-          text: 'Unable to connect to Car Care Connect assistant. Please try again shortly.', 
+          text: errorMsg, 
           sender: 'bot',
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
         }
