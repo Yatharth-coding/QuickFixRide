@@ -83,7 +83,7 @@ QuickFixRide/
 
 ## 🚀 Getting Started
 
-Follow these steps to run QuickFixRide on your local machine:
+Follow these steps to run Car Care Connect on your local machine:
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (version 18+ recommended)
