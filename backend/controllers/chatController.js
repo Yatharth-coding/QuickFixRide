@@ -32,7 +32,7 @@ exports.handleChat = async (req, res, next) => {
 
             // Add timeout to prevent hanging
             const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('AI request timed out')), 15000)
+                setTimeout(() => reject(new Error('AI request timed out')), 350000)
             );
 
             const resultPromise = model.generateContent(systemPrompt + message);
